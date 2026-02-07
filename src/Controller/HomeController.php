@@ -11,6 +11,10 @@ final class HomeController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('security.login');
+        }
         return $this->render('pages/home/index.html.twig');
     }
+
 }

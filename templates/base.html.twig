@@ -7,7 +7,8 @@
 		</title>
 
 		{% block stylesheets %}
-			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.8/dist/lux/bootstrap.min.css">
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.8/dist/litera/bootstrap.min.css">
+			<link rel="stylesheet" href="{{ asset('styles/app.css') }}">
 
 			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -17,15 +18,19 @@
 		{% block javascripts %}{% endblock %}
 	</head>
 	<body>
-		{% block header %}
-			{% include "_partials/_header.html.twig" %}
-		{% endblock %}
+		{% include "_partials/_adminHeaderHorizontal.html.twig" %}
 
+		<div class="row">
+			<div class="col-md-2 min-vh-100 bg-primary" style="width: 225px;">
+				{% block header %}
+					{% include "_partials/_adminHeader.html.twig" %}
+				{% endblock %}
+			</div>
 
-		{% block body %}{% endblock %}
+			<div class="col bg-light"> {% block body %}{% endblock %}
+				</div>
+			</div>
 
-		{% block footer %}
-			{% include "_partials/_footer.html.twig" %}
-		{% endblock %}
-	</body>
-</html>
+			{% block footer %}{% endblock %}
+		</body>
+	</html>
