@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container-fluid text-start mt-4 d-flex justify-content-between align-items-center">
+		<h1>Liste des produits</h1>
+		<a href="{{ path('product.new') }}" class="btn btn-primary">
+			<i class="bi bi-plus-lg"></i>
+			Ajouter
+		</a>
+	</div>
+
+	{% for message in app.flashes('success') %}
+		<div class="alert alert-dismissible alert-success">
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			{{ message }}
+		</div>
+	{% endfor %}
+
+	{% for message in app.flashes('error') %}
+		<div class="alert alert-dismissible alert-danger">
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			{{ message }}
+		</div>
+	{% endfor %}
+
+	<div class="mt-4 ms-2" style="max-width: 1650px;">
+		<table class="table table-hover table-striped align-middle">
+			<thead class="table-primary">
+				<tr>
+					<th scope="col">Nom</th>
+					<th scope="col">Description</th>
+					<th scope="col">Prix</th>
+					<th scope="col">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for product in products %}
+					<tr>
+						<th scope="row">{{ product.name }}</th>
+						<td>{{ product.description|length > 50 ? product.description|slice(0, 50) ~ '...' : product.description }}</td>
+						<td>{{ product.price|number_format(2, ',', ' ') }}
+							&euro;</td>
+						<td>
+							<div class="dropdown">
+								<button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<i class="bi bi-three-dots"></i>
+								</button>
+								<ul class="dropdown-menu shadow">
+									<li>
+										<a class="dropdown-item" href="{{ path('product.edit', {id: product.id}) }}">
+											<i class="bi bi-pencil"></i>
+											Modifier
+										</a>
+									</li>
+
+									{% if is_granted('ADMIN_VIEW') %}
+										<li>
+											<button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ product.id }}">
+												<i class="bi bi-trash"></i>
+												Supprimer
+											</button>
+										</li>
+									{% endif %}
+								</ul>
+							</div>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+	{% for product in products %}
+		<div class="modal fade" id="deleteModal{{ product.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ product.id }}" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="deleteModalLabel{{ product.id }}">Confirmer la suppression</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+					</div>
+					<div class="modal-body">
+						Êtes-vous sûr de vouloir supprimer le produit
+						<strong>{{ product.name }}</strong>
+						?
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+						<form action="{{ path('product.delete', {id: product.id}) }}" method="POST">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+							<button type="submit" class="btn btn-danger">Supprimer</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+
+{% endblock %}

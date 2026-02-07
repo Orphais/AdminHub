@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container-fluid text-start mt-4 d-flex justify-content-between align-items-center">
+		<h1>Liste des utilisateurs</h1>
+		<a href="{{ path('user.new') }}" class="btn btn-primary">
+			<i class="bi bi-plus-lg"></i>
+			Ajouter
+		</a>
+	</div>
+
+	{% for message in app.flashes('success') %}
+		<div class="alert alert-dismissible alert-success">
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			{{ message }}
+		</div>
+	{% endfor %}
+
+	{% for message in app.flashes('error') %}
+		<div class="alert alert-dismissible alert-danger">
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			{{ message }}
+		</div>
+	{% endfor %}
+
+	<div class="mt-4 ms-2" style="max-width: 1650px;">
+		<table class="table table-hover table-striped align-middle">
+			<thead class="table-primary">
+				<tr>
+					<th scope="col">Email</th>
+					<th scope="col">Rôle</th>
+					<th scope="col">Nom</th>
+					<th scope="col">Prénom</th>
+					<th scope="col">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in users %}
+					<tr>
+						<th scope="row">{{ user.email }}</th>
+						<td>{{ user.roles|first|replace({'ROLE_': ''})|capitalize }}</td>
+						<td>{{ user.lastName }}</td>
+						<td>{{ user.firstName }}</td>
+						<td>
+							<div class="dropdown">
+								<button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<i class="bi bi-three-dots"></i>
+								</button>
+								<ul class="dropdown-menu shadow">
+									<li>
+										<a class="dropdown-item" href="{{ path('user.edit', {id: user.id}) }}">
+											<i class="bi bi-pencil"></i>
+											Modifier
+										</a>
+									</li>
+									{% if is_granted('ADMIN_VIEW') %}
+										<li>
+											<button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ user.id }}">
+												<i class="bi bi-trash"></i>
+												Supprimer
+											</button>
+										</li>
+									{% endif %}
+								</ul>
+							</div>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+	{% for user in users %}
+		<div class="modal fade" id="deleteModal{{ user.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ user.id }}" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="deleteModalLabel{{ user.id }}">Confirmer la suppression</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+					</div>
+					<div class="modal-body">
+						Êtes-vous sûr de vouloir supprimer l'utilisateur
+						<strong>{{ user.firstName }}
+							{{ user.lastName }}</strong>
+						?
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+						<form action="{{ path('user.delete', {id: user.id}) }}" method="POST">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+							<button type="submit" class="btn btn-danger">Supprimer</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+
+{% endblock %}

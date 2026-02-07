@@ -1,0 +1,21 @@
+<nav class="sidebar d-flex flex-column p-3 ms-1">
+	<ul class="nav flex-column">
+		<li class="nav-item">
+			<h6 class="mt-2 text-white-50">Accueil</h6>
+			<a class="nav-link text-white" href="">
+				<i class="bi bi-house-door me-2"></i>Accueil</a>
+		</li>
+		{% if is_granted('ADMIN_VIEW') %}
+			<li class="nav-item">
+				<h6 class="mt-4 text-white-50">Utilisateurs</h6>
+				<a class="nav-link text-white" href="{{ path('user.list') }}">
+					<i class="bi bi-people me-2"></i>Utilisateurs</a>
+			</li>
+		{% endif %}
+		<li class="nav-item">
+			<h6 class="mt-4 text-white-50">Produits</h6>
+			<a class="nav-link text-white" href="{{ path('product.list') }}">
+				<i class="bi bi-box-seam me-2"></i>Produits</a>
+		</li>
+	</ul>
+</nav>

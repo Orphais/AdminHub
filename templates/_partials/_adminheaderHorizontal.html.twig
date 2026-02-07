@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+	<div class="container-fluid px-4">
+		<h4 class="text-white mb-0 fw-bold">Administration</h4>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarColor03">
+			<ul class="navbar-nav ms-auto align-items-center">
+				<li class="nav-item">
+					<span class="nav-link d-flex align-items-center">
+						<i class="bi bi-person-circle fs-5 me-2"></i>
+						<span class="fw-semibold">{{ app.user.firstName }}
+							{{ app.user.lastName|first }}.</span>
+					</span>
+				</li>
+				<li class="nav-item">
+					<a href="{{ path('security.logout') }}">
+						<i class="bi bi-box-arrow-right me-1"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
