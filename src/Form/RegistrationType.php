@@ -23,58 +23,58 @@ class RegistrationType extends AbstractType
                 'label' => 'Email',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter an email',
+                        'message' => 'Veuillez entrer un email.',
                     ]),
                     new Email([
-                        'message' => 'Please enter a valid email address',
+                        'message' => 'Veuillez entrer une adresse email valide.',
                     ]),
                     new Length([
                         'max' => 180,
-                        'maxMessage' => 'Email cannot be longer than {{ limit }} characters',
+                        'maxMessage' => 'L\'email ne peut pas dépasser {{ limit }} caractères.',
                     ]),
                 ],
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
-                    'label' => 'Password',
+                    'label' => 'Mot de passe',
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'Please enter a password',
+                            'message' => 'Veuillez entrer un mot de passe.',
                         ]),
                         new Length([
                             'min' => 6,
-                            'minMessage' => 'Password must be at least {{ limit }} characters',
+                            'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères.',
                             'max' => 4096,
                         ]),
                     ],
                 ],
                 'second_options' => [
-                    'label' => 'Confirm Password',
+                    'label' => 'Confirmer le mot de passe',
                 ],
-                'invalid_message' => 'The password fields must match',
+                'invalid_message' => 'Les mots de passe doivent correspondre.',
             ])
             ->add('firstName', TextType::class, [
-                'label' => 'First Name',
+                'label' => 'Prénom',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a first name',
+                        'message' => 'Veuillez entrer un prénom.',
                     ]),
                     new Length([
                         'max' => 255,
-                        'maxMessage' => 'First name cannot be longer than {{ limit }} characters',
+                        'maxMessage' => 'Le prénom ne peut pas dépasser {{ limit }} caractères.',
                     ]),
                 ],
             ])
             ->add('lastName', TextType::class, [
-                'label' => 'Last Name',
+                'label' => 'Nom',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a last name',
+                        'message' => 'Veuillez entrer un nom.',
                     ]),
                     new Length([
                         'max' => 255,
-                        'maxMessage' => 'Last name cannot be longer than {{ limit }} characters',
+                        'maxMessage' => 'Le nom ne peut pas dépasser {{ limit }} caractères.',
                     ]),
                 ],
             ])

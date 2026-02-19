@@ -1,0 +1,32 @@
+<div class="d-flex flex-column h-100">
+	<div class="flex-grow-1">
+		<h2 class="pb-3">Nouveau produit</h2>
+		<div class="vstack gap-4 my-4">
+			{% for step in form.vars.visible_steps %}
+				<div class="d-flex gap-2 align-items-center {{ step.index > form.vars.cursor.stepIndex ? 'text-muted' }}">
+					{% if step.is_current_step %}
+						<i class="bi bi-circle-fill"></i>
+					{% elseif step.index < form.vars.cursor.stepIndex %}
+						<i class="bi bi-check-circle-fill"></i>
+					{% else %}
+						<i class="bi bi-circle"></i>
+					{% endif %}
+
+					<div class="d-flex flex-column">
+						{% if step.name == 'type' %}
+							Type
+						{% elseif step.name == 'details' %}
+							Details
+						{% elseif step.name == 'logistics' %}
+							Logistique
+						{% elseif step.name == 'license' %}
+							Licence
+						{% elseif step.name == 'confirmation' %}
+							Confirmation
+						{% endif %}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>

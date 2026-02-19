@@ -4,46 +4,67 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Form\Product\ProductFlowData;
+use App\Form\Product\ProductFlowType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class ProductController extends AbstractController
 {
     #[Route('/products', name: 'product.list')]
-    public function list(ProductRepository $productRepository): Response
+    public function list(ProductRepository $productRepository, Request $request): Response
     {
-        $products = $productRepository->findAll();
+        $sortByPrice = $request->query->getBoolean('sortByPrice');
+
+        $products = $sortByPrice
+            ? $productRepository->findAllOrderedByPriceDesc()
+            : $productRepository->findAll();
 
         return $this->render('pages/product/productList.html.twig', [
             'products' => $products,
+            'sortByPrice' => $sortByPrice,
         ]);
     }
 
     #[Route('/product/new', name: 'product.new')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $product = new Product();
-        $form = $this->createForm(ProductType::class, $product);
+        $flow = $this->createForm(ProductFlowType::class, new ProductFlowData())
+            ->handleRequest($request);
 
-        $form->handleRequest($request);
+        if ($flow->isSubmitted() && $flow->isValid() && $flow->isFinished()) {
+            $data = $flow->getData();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $product = $form->getData();
+            $product = new Product();
+            $product->setType($data->type->type);
+            $product->setName($data->details->name);
+            $product->setDescription($data->details->description);
+            $product->setPrice($data->details->price);
+
+            if ($data->type->type === 'physical') {
+                $product->setWeight($data->logistics->weight);
+                $product->setWidth($data->logistics->width);
+                $product->setHeight($data->logistics->height);
+                $product->setDepth($data->logistics->depth);
+                $product->setStock($data->logistics->stock);
+            } else {
+                $product->setLicenseKey($data->license->licenseKey);
+                $product->setDownloadUrl($data->license->downloadUrl);
+            }
 
             $entityManager->persist($product);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Le produit a bien été créé.');
-
+            $this->addFlash('success', 'Produit créé !');
             return $this->redirectToRoute('product.list');
         }
 
         return $this->render('pages/product/new.html.twig', [
-            'form' => $form->createView(),
+            'form' => $flow->getStepForm(),
         ]);
     }
 

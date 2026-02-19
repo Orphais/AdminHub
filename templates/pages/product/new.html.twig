@@ -1,34 +1,88 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<div class="container-fluid text-start mt-4">
-		<h1>Nouveau produit</h1>
+	<div class="container mt-4">
+		<div class="card">
+			<div>
+				{{ form_start(form) }}
+				<div class="row g-0">
+					<div class="col-4 bg-light rounded-start p-4">
+						{{ include('pages/product/_progress.html.twig') }}
+					</div>
+					<div class="col-8">
+						{% set currentStep = form.vars.cursor.currentStep %}
+
+						<div class="card-body p-4 d-flex flex-column h-100">
+							<div class="flex-grow-1" style="min-height: 350px">
+								{% if currentStep == 'confirmation' %}
+									{% do form[currentStep].setRendered %}
+									{{ block('confirmation_step') }}
+								{% else %}
+									{{ form_widget(form[currentStep]) }}
+								{% endif %}
+							</div>
+							<div>
+								{{ block('navigator') }}
+							</div>
+						</div>
+					</div>
+				</div>
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block confirmation_step %}
+	<h5>Recapitulatif</h5>
+	<hr>
+
+	<div>
+		<strong>Type</strong>
+		<p class="mb-0">{{ form.vars.data.type.type == 'physical' ? 'Physique' : 'Numerique' }}</p>
 	</div>
 
-	<div class="container mt-4">
-		{{ form_start(form) }}
-			<div class="mb-3">
-				{{ form_label(form.name) }}
-				{{ form_widget(form.name) }}
-				{{ form_errors(form.name) }}
-			</div>
+	<hr>
 
-			<div class="mb-3">
-				{{ form_label(form.description) }}
-				{{ form_widget(form.description) }}
-				{{ form_errors(form.description) }}
-			</div>
+	<div>
+		<strong>Details</strong>
+		<p class="mb-0">{{ form.vars.data.details.name }} — {{ form.vars.data.details.price }}€</p>
+		<small class="text-muted">{{ form.vars.data.details.description }}</small>
+	</div>
 
-			<div class="mb-3">
-				{{ form_label(form.price) }}
-				{{ form_widget(form.price) }}
-				{{ form_errors(form.price) }}
-			</div>
+	<hr>
 
-			<div class="d-flex gap-2">
-				<a href="{{ path('product.list') }}" class="btn btn-secondary">Annuler</a>
-				<button type="submit" class="btn btn-primary">Créer</button>
-			</div>
-		{{ form_end(form) }}
+	{% if form.vars.data.type.type == 'physical' %}
+		<div>
+			<strong>Logistique</strong>
+			<p class="mb-0">{{ form.vars.data.logistics.weight }}g — {{ form.vars.data.logistics.width }}x{{ form.vars.data.logistics.height }}x{{ form.vars.data.logistics.depth }}mm</p>
+			<small class="text-muted">Stock : {{ form.vars.data.logistics.stock }}</small>
+		</div>
+	{% else %}
+		<div>
+			<strong>Licence</strong>
+			<p class="mb-0">{{ form.vars.data.license.licenseKey }}</p>
+			<small class="text-muted">{{ form.vars.data.license.downloadUrl }}</small>
+		</div>
+	{% endif %}
+
+	<hr>
+{% endblock %}
+
+{% block navigator %}
+	<div class="d-flex justify-content-between border-top pt-3 mt-3">
+		<div>
+			{% if form.navigator.back is defined %}
+				{{ form_widget(form.navigator.back, {attr: {class: 'btn-outline-dark'}}) }}
+			{% endif %}
+		</div>
+		<div>
+			{% if form.navigator.next is defined %}
+				{{ form_widget(form.navigator.next, {attr: {class: 'btn-dark'}}) }}
+			{% endif %}
+			{% if form.navigator.finish is defined %}
+				{{ form_widget(form.navigator.finish, {attr: {class: 'btn-dark'}}) }}
+			{% endif %}
+		</div>
 	</div>
 {% endblock %}

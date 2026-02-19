@@ -53,19 +53,6 @@ class UserType extends AbstractType
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer un nom.']),
                 ],
-            ])
-            ->add('plainPassword', PasswordType::class, [
-                'mapped' => false,
-                'required' => !$isEdit,
-                'label' => $isEdit ? 'Nouveau mot de passe (laisser vide pour ne pas changer)' : 'Mot de passe',
-                'attr' => ['class' => 'form-control'],
-                'constraints' => $isEdit ? [] : [
-                    new NotBlank(['message' => 'Veuillez entrer un mot de passe.']),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères.',
-                    ]),
-                ],
             ]);
     }
 
