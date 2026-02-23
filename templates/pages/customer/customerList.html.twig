@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container-fluid text-start mt-4 d-flex justify-content-between align-items-center">
+		<h1>Liste des clients</h1>
+		{% if is_granted('CUSTOMER_MANAGE') %}
+			<a href="{{ path('customer.new') }}" class="btn btn-primary">
+				<i class="bi bi-plus-lg"></i>
+				Ajouter
+			</a>
+		{% endif %}
+	</div>
+
+	{% for message in app.flashes('success') %}
+		<div class="alert alert-dismissible alert-success">
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			{{ message }}
+		</div>
+	{% endfor %}
+
+	{% for message in app.flashes('error') %}
+		<div class="alert alert-dismissible alert-danger">
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			{{ message }}
+		</div>
+	{% endfor %}
+
+	<div class="mt-4 ms-2" style="max-width: 1650px;">
+		<table class="table table-hover table-striped align-middle">
+			<thead class="table-primary">
+				<tr>
+					<th scope="col">Nom</th>
+					<th scope="col">Prénom</th>
+					<th scope="col">Email</th>
+					<th scope="col">Téléphone</th>
+					<th scope="col">Adresse</th>
+					<th scope="col">Créé le</th>
+					{% if is_granted('CUSTOMER_MANAGE') %}
+						<th scope="col">Actions</th>
+					{% endif %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for customer in customers %}
+					<tr>
+						<th scope="row">{{ customer.lastName }}</th>
+						<td>{{ customer.firstName }}</td>
+						<td>{{ customer.email }}</td>
+						<td>{{ customer.phoneNumber ?? '—' }}</td>
+						<td>{{ customer.address ?? '—' }}</td>
+						<td>{{ customer.createdAt|date('d/m/Y') }}</td>
+						{% if is_granted('CUSTOMER_MANAGE') %}
+							<td>
+								<div class="dropdown">
+									<button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+										<i class="bi bi-three-dots"></i>
+									</button>
+									<ul class="dropdown-menu shadow">
+										<li>
+											<a class="dropdown-item" href="{{ path('customer.edit', {id: customer.id}) }}">
+												<i class="bi bi-pencil"></i>
+												Modifier
+											</a>
+										</li>
+									</ul>
+								</div>
+							</td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

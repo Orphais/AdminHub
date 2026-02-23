@@ -20,22 +20,28 @@ class UserFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         $admin = new User();
-        $admin->setEmail('admin@example.com')
+        $admin->setEmail('admin@adminhub.fr')
             ->setFirstName($faker->firstName())
             ->setLastName($faker->lastName())
             ->setRoles(['ROLE_ADMIN']);
-        $admin->setPassword($this->passwordHasher->hashPassword($admin, 'admin123'));
+        $admin->setPassword($this->passwordHasher->hashPassword($admin, 'password'));
         $manager->persist($admin);
 
-        for ($i = 1; $i <= 3; $i++) {
-            $manager_user = new User();
-            $manager_user->setEmail($faker->unique()->safeEmail())
-                ->setFirstName($faker->firstName())
-                ->setLastName($faker->lastName())
-                ->setRoles(['ROLE_MANAGER']);
-            $manager_user->setPassword($this->passwordHasher->hashPassword($manager_user, 'password123'));
-            $manager->persist($manager_user);
-        }
+        $acc_manager = new User();
+        $acc_manager->setEmail('manager@adminhub.fr')
+            ->setFirstName($faker->firstName())
+            ->setLastName($faker->lastName())
+            ->setRoles(['ROLE_MANAGER']);
+        $acc_manager->setPassword($this->passwordHasher->hashPassword($acc_manager, 'password'));
+        $manager->persist($acc_manager);
+
+        $user = new User();
+        $user->setEmail('user@adminhub.fr')
+            ->setFirstName($faker->firstName())
+            ->setLastName($faker->lastName())
+            ->setRoles(['ROLE_USER']);
+        $user->setPassword($this->passwordHasher->hashPassword($user, 'password'));
+        $manager->persist($user);
 
         for ($i = 1; $i <= 10; $i++) {
             $user = new User();
@@ -43,7 +49,7 @@ class UserFixtures extends Fixture
                 ->setFirstName($faker->firstName())
                 ->setLastName($faker->lastName())
                 ->setRoles(['ROLE_USER']);
-            $user->setPassword($this->passwordHasher->hashPassword($user, 'password123'));
+            $user->setPassword($this->passwordHasher->hashPassword($user, 'password'));
             $manager->persist($user);
         }
 

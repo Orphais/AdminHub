@@ -16,13 +16,38 @@
 
 						{% if error %}
 							<div class="alert alert-danger alert-dismissible fade show" role="alert">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill me-2" viewBox="0 0 16 16">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill me-2" viewbox="0 0 16 16">
 									<path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
 								</svg>
 								{{ error.messageKey|trans(error.messageData, 'security') }}
 								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 							</div>
 						{% endif %}
+
+						<div class="alert alert-info border-0 rounded-3 mb-4 p-0 overflow-hidden">
+							<div class="d-flex align-items-center px-3 py-2 bg-info bg-opacity-25">
+								<span class="fw-semibold text-info small">Comptes de démonstration</span>
+							</div>
+							<div class="px-3 py-2">
+								<p class="text-muted small mb-2">Mot de passe commun :
+									<code class="bg-light px-1 rounded">password</code>
+								</p>
+								<div class="d-flex flex-column gap-1">
+									<div class="d-flex align-items-center justify-content-between">
+										<span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-2">Admin</span>
+										<code class="small text-muted">admin@adminhub.fr</code>
+									</div>
+									<div class="d-flex align-items-center justify-content-between">
+										<span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 rounded-pill px-2">Manager</span>
+										<code class="small text-muted">manager@adminhub.fr</code>
+									</div>
+									<div class="d-flex align-items-center justify-content-between">
+										<span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2">Utilisateur</span>
+										<code class="small text-muted">user@adminhub.fr</code>
+									</div>
+								</div>
+							</div>
+						</div>
 
 						<form method="post">
 							<div class="mb-3">

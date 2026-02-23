@@ -2,22 +2,11 @@
 
 {% block body %}
 	<div class="container-fluid text-start mt-4">
-		<h1>Modifier l'utilisateur</h1>
+		<h1>Modifier le client</h1>
 	</div>
 
 	<div class="container mt-4">
 		{{ form_start(form) }}
-		<div class="mb-3">
-			{{ form_label(form.email) }}
-			{{ form_widget(form.email) }}
-			{{ form_errors(form.email) }}
-		</div>
-
-		<div class="mb-3">
-			{{ form_label(form.roles) }}
-			{{ form_widget(form.roles) }}
-			{{ form_errors(form.roles) }}
-		</div>
 
 		<div class="mb-3">
 			{{ form_label(form.lastName) }}
@@ -31,10 +20,29 @@
 			{{ form_errors(form.firstName) }}
 		</div>
 
+		<div class="mb-3">
+			{{ form_label(form.email) }}
+			{{ form_widget(form.email) }}
+			{{ form_errors(form.email) }}
+		</div>
+
+		<div class="mb-3">
+			{{ form_label(form.phoneNumber) }}
+			{{ form_widget(form.phoneNumber) }}
+			{{ form_errors(form.phoneNumber) }}
+		</div>
+
+		<div class="mb-3">
+			{{ form_label(form.address) }}
+			{{ form_widget(form.address) }}
+			{{ form_errors(form.address) }}
+		</div>
+
 		<div class="d-flex gap-2">
-			<a href="{{ path('user.list') }}" class="btn btn-secondary">Annuler</a>
+			<a href="{{ path('customer.list') }}" class="btn btn-secondary">Annuler</a>
 			<button type="submit" class="btn btn-primary">Enregistrer</button>
 		</div>
+
 		{{ form_end(form) }}
 	</div>
 {% endblock %}

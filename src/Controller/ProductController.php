@@ -7,6 +7,7 @@ use App\Form\ProductType;
 use App\Form\Product\ProductFlowData;
 use App\Form\Product\ProductFlowType;
 use App\Repository\ProductRepository;
+use App\Service\ProductCsvExportService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +29,12 @@ final class ProductController extends AbstractController
             'products' => $products,
             'sortByPrice' => $sortByPrice,
         ]);
+    }
+
+    #[Route('/products/export', name: 'product.export')]
+    public function export(ProductRepository $productRepository, ProductCsvExportService $csvExportService): Response
+    {
+        return $csvExportService->export($productRepository->findAll());
     }
 
     #[Route('/product/new', name: 'product.new')]
