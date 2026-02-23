@@ -4,7 +4,7 @@ Backoffice Symfony pour la gestion des utilisateurs, produits et clients.
 
 ## Démonstration
 
-<video src="PRÉSENTATION - SYMFONY.mp4" controls width="100%"></video>
+[![Voir la démonstration](https://img.youtube.com/vi/CfhhMEovq8g/0.jpg)](https://youtu.be/CfhhMEovq8g)
 
 ## Prérequis
 
