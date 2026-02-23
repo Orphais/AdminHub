@@ -2,6 +2,10 @@
 
 Backoffice Symfony pour la gestion des utilisateurs, produits et clients.
 
+## Démonstration
+
+<video src="PRÉSENTATION - SYMFONY.mp4" controls width="100%"></video>
+
 ## Prérequis
 
 - PHP >= 8.2
@@ -31,6 +35,8 @@ php bin/console doctrine:migrations:migrate
 php bin/console doctrine:fixtures:load
 
 # Lancer le serveur
+symfony server start
+# ou
 symfony serve
 # ou
 php -S localhost:8000 -t public/
@@ -39,14 +45,17 @@ php -S localhost:8000 -t public/
 ## Fonctionnalités
 
 ### Authentification
+
 - Inscription et connexion sécurisées
 - Trois niveaux de rôles : `ROLE_USER`, `ROLE_MANAGER`, `ROLE_ADMIN`
 
 ### Gestion des utilisateurs (admin uniquement)
+
 - Liste, ajout, édition et suppression des utilisateurs
 - Contrôle d'accès via Voter (`UserVoter`)
 
 ### Gestion des produits
+
 - Liste publique avec tri par prix décroissant
 - Formulaire de création multi-étapes (type → détails → logistique/licence → confirmation)
 - Étapes conditionnelles selon le type : physique (logistique) ou digital (licence)
@@ -54,6 +63,7 @@ php -S localhost:8000 -t public/
 - Export CSV
 
 ### Gestion des clients (admin et manager)
+
 - Liste, ajout et édition des clients
 - Contrôle d'accès via Voter (`CustomerVoter`)
 - Validations : format email, caractères autorisés pour le nom, unicité de l'email
